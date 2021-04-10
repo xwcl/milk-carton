@@ -4,27 +4,26 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y \
         git \
-	make \        
-	dpkg-dev \
-	libc6-dev \
+        make \
+        dpkg-dev \
+        libc6-dev \
         cmake \
         pkg-config \
         python3-dev \
         libcfitsio-dev \
         pybind11-dev \
         python3-pybind11 \
-	nnn \
-	tmux \
+        nnn \
+        tmux \
         libgsl-dev \
         libfftw3-dev \
         libncurses-dev \
         libbison-dev \
         libfl-dev \
         libreadline-dev \
-	pkg-config \
-	gcc-10 \
-	g++-10 
-
+        pkg-config \
+        gcc-10 \
+        g++-10
 RUN rm /usr/bin/gcc /usr/bin/g++
 RUN ln /usr/bin/gcc-10 /usr/bin/gcc
 RUN ln /usr/bin/g++-10 /usr/bin/g++
