@@ -1,8 +1,10 @@
 FROM ubuntu:latest
 RUN useradd -ms /bin/bash milkuser
+RUN groupadd -r docker && usermod -aG docker milkuser
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y \
+        sudo \
         git \
         make \
         dpkg-dev \
@@ -37,8 +39,6 @@ RUN mkdir /work
 WORKDIR /work
 ENV DEBIAN_FRONTEND interactive
 RUN ln -s /usr/local/milk-* /usr/local/milk
-ENV MILK_ROOT /build
-ENV MILK_INSTALLDIR /usr/local/milk
-ENV PATH ${PATH}:${MILK_INSTALLDIR}/bin
-ENV PKG_CONFIG_PATH $PKG_CONFIG_PATH:${MILK_INSTALLDIR}/lib/pkgconfig
-USER milkuser
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
