@@ -29,4 +29,8 @@ if [[ "$(id -u)" = "0" && -e /var/run/docker.sock ]]; then
 fi
 
 # not root? great let's become a login shell (or whatever)
-exec "$@"
+if [[ "$#" == 0 ]]; then
+  exec bash -l
+else
+  exec "$@"
+fi
