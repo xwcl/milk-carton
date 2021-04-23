@@ -1,6 +1,5 @@
 FROM ubuntu:latest
 RUN useradd -ms /bin/bash milkuser
-RUN groupadd -r docker && usermod -aG docker milkuser
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y \
@@ -26,6 +25,7 @@ RUN apt-get update && \
         pkg-config \
         gcc-10 \
         g++-10
+ENV DEBIAN_FRONTEND interactive
 RUN rm /usr/bin/gcc /usr/bin/g++
 RUN ln /usr/bin/gcc-10 /usr/bin/gcc
 RUN ln /usr/bin/g++-10 /usr/bin/g++
@@ -37,8 +37,10 @@ WORKDIR /build/_build
 RUN make install
 RUN mkdir /work
 WORKDIR /work
-ENV DEBIAN_FRONTEND interactive
 RUN ln -s /usr/local/milk-* /usr/local/milk
+
+# Entrypoint drops privileges after matching milkuser uid/gid
+# to that observed on /work (most likely bind-mounted)
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

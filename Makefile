@@ -11,6 +11,6 @@ push:
 
 run: build
 	mkdir -p ./work
-	docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(PWD)/work:/work -it xwcl/milk-carton bash -l
+	docker run -v $(PWD)/work:/work -it xwcl/milk-carton bash -l
 
 .PHONY: all build force-build push run
